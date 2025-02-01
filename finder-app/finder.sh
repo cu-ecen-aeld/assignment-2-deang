@@ -24,3 +24,12 @@ then
 	echo "Exiting..."
 	exit 1
 fi
+
+# Use find to recursively count the number of files in filesdir
+# ASSUMPTION: we are only looking for regular files.  The assignment does not explicitly state this.
+recursive_file_count=$( find "$filesdir" -type f | wc -l )
+
+# Use grep to recursively count the number of lines matching searchstr in filesdir
+matching_line_count=$( grep -r "$searchstr" "$filesdir" | wc -l )
+
+echo "The number of files are $recursive_file_count and the number of matching lines are $matching_line_count"
