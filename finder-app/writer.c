@@ -2,6 +2,7 @@
 #include <string.h> // strlen()
 #include <fcntl.h> // open()
 #include <unistd.h> // write(), close()
+#include <syslog.h> // syslog()
 
 int main(int argc, char *argv[])
 {
@@ -11,8 +12,10 @@ int main(int argc, char *argv[])
 	// and the content to write to the file.
 	if(argc < 3)
 	{
-		printf("Error: Too few arguments.\n");
+		char errormessage[]="Error: Too few arguments.\n";
+		printf("%s",errormessage);
 		printf("Usage: $ writer <file full path> <content to write>");
+		syslog(LOG_USER | LOG_ERR, "%s", errormessage);
 		return 1;
 	}
 
@@ -27,14 +30,17 @@ int main(int argc, char *argv[])
 	{
 		// Note I'm not indicating that the file couldn't be created here.
 		// The failure could have been due to insufficient permissions as well.
-		printf("Error: open failed.");
+		char errormessage[]="Error: open failed.";
+		printf("%s",errormessage);
+		syslog(LOG_USER | LOG_ERR, "%s", errormessage);
 		return 1;
 	}
 
 	// Success!
 
-
 	// Try to write the file.  Note that write can do partial writes.
+
+	syslog(LOG_USER | LOG_DEBUG,"Writing %s to %s",writestring,writefile);
 
 	int writeoffset = 0,writelen = strlen(writestring);	
 
@@ -43,7 +49,9 @@ int main(int argc, char *argv[])
 		int writeret=write(fd,writestring + writeoffset,writelen - writeoffset);
 		if(writeret == -1)
 		{
-			printf("Error: write failed.\n");
+			char errormessage[]="Error: write failed.\n";
+			printf("%s",errormessage);
+			syslog(LOG_USER | LOG_ERR, "%s", errormessage);
 			break;
 		}
 
