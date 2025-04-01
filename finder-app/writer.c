@@ -24,8 +24,10 @@ int main(int argc, char *argv[])
 
 	// Note that the program must return 1 if the file could not be created.
 
+	mode_t mode = S_IRUSR | S_IWUSR; // 600 - the owner can read and write.  Everyone else can do nothing.
+
 	// Try to open the file.
-	int fd=open(writefile,O_RDWR | O_CREAT | O_TRUNC);
+	int fd=open(writefile,O_RDWR | O_CREAT | O_TRUNC,mode);
 	if(-1 == fd)
 	{
 		// Note I'm not indicating that the file couldn't be created here.
