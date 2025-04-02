@@ -12,9 +12,9 @@ int main(int argc, char *argv[])
 	// and the content to write to the file.
 	if(argc < 3)
 	{
-		char errormessage[]="Error: Too few arguments.\n";
-		printf("%s",errormessage);
-		printf("Usage: $ writer <file full path> <content to write>");
+		char errormessage[]="Error: Too few arguments.";
+		printf("%s\n",errormessage);
+		printf("Usage: $ writer <file full path> <content to write>\n");
 		syslog(LOG_USER | LOG_ERR, "%s", errormessage);
 		return 1;
 	}
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 		// Note I'm not indicating that the file couldn't be created here.
 		// The failure could have been due to insufficient permissions as well.
 		char errormessage[]="Error: open failed.";
-		printf("%s",errormessage);
+		printf("%s\n",errormessage);
 		syslog(LOG_USER | LOG_ERR, "%s", errormessage);
 		return 1;
 	}
@@ -51,8 +51,8 @@ int main(int argc, char *argv[])
 		int writeret=write(fd,writestring + writeoffset,writelen - writeoffset);
 		if(writeret == -1)
 		{
-			char errormessage[]="Error: write failed.\n";
-			printf("%s",errormessage);
+			char errormessage[]="Error: write failed.";
+			printf("%s\n",errormessage);
 			syslog(LOG_USER | LOG_ERR, "%s", errormessage);
 			break;
 		}
